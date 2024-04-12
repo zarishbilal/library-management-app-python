@@ -77,6 +77,7 @@ class book:
     def __str__(self):
         return f"{self.__isbn:<20}{self.__title:^20}{self.__author:^20}{self.get_genre_name():^20}{self.get_availability():^20}"
 
+
 '''•	Receives a book list
 •	Inputs an ISBN from the user and calls find_book_by_isbn()
 •	If an index to a matching book was returned and that book is currently available, invokes the book’s borrow_it() method. Otherwise displays an appropriate message.
