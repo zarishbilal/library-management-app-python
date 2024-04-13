@@ -61,6 +61,11 @@ def search_books(books, search_string):
     return search_result
 
 def add_book(book_list):
+  '''
+    Description: Receives book list, inputs ISBN, title, author, and genre name (that is then validated) from the user creates a new Book instance of appends it to the list
+    Arguments: book_list - (list) - list of all book objects
+    Returns: None
+    '''
   isbn = input("Enter the ISBN:")
   title = input("Enter the title:")
   author = input("Enter the author name:")
@@ -77,11 +82,22 @@ def add_book(book_list):
   print("Book added successfully")
   
 def print_books(book_list):
+  '''
+    Description: Receives a book list and displays book information heading and then displays each Book object on a separate line
+    Arguments: book_list - (list) - list of all Book objects
+    Returns: None
+    '''
   print("\nBook Information")
   for book in book_list:
     print(f"ISBN:{book.get_isbn()}\nTitle:{book.get_title()}\nAuthor:{book.get_author()}\nGenre Name:{book.get_genre_name()}")
     
 def save_books(book_list,file_name):
+  '''
+    Description: Receives book list and name of CSV file. Iterates over book list, formatting a comma separated string containing book attributes, writes each stringa as a separate line to the file, and then returns the number of books saved to the file
+    Arguments: booklist - (list) - list of all Book objects
+                file_name - (str) - name of CSV file we are writing to
+    Returns: len(book_list) - (int) - number of books saved to the file
+    '''
   file_name = input("Enter file name:")
   with open(file_name,'w') as file:
    for book in book_list:
