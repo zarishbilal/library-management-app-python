@@ -59,3 +59,39 @@ def search_books(books, search_string):
         if string_found:
             search_result.append(book)
     return search_result
+
+def main():
+    print("Starting the system ...")
+    file_name = input("Enter book catalog filename: ")
+    while not os.path.exists(file_name):
+        file_name = input("File not found. Re-enter book catalog filename: ")
+    print("Book catalog has been loaded.")
+    book_list = []
+    load_books(book_list,file_name)
+    menu_heading = "\nReader's Guild Library - Main Menu\n" + "=" * 34
+    menu_options = {1:"Search for books", 2:"Borrow a book", 3:"Return a book", 0:"Exit the system"}
+    
+    # continue showing main menu until user enters 0
+    user_selection = 1
+
+    while user_selection != 0:
+        user_selection = print_menu(menu_heading, menu_options)
+        if user_selection == 2130:
+            menu_heading = "\nReader's Guild Library - Librarian Menu\n" + "=" * 39
+            menu_options = {1:"Search for books", 2:"Borrow a book", 3:"Return a book", 4:"Add a book", 5:"Remove a book", 6:"Print catalog", 0:"Exit the system"}
+        match user_selection:
+            case 1:
+                print("\n-- Search for books --")
+                search_string = input("Enter search value: ")
+                search_result = search_books(book_list, search_string)
+                if len(search_result) == 0:
+                    print("No matching books found.")
+                else:
+                    # print_books(search_result)
+                    pass
+            
+    print("-- Exit the system --")
+    # save_books(book_list, file_name)
+    print("Book catalog has been saved.\nGood Bye!")
+
+main()
