@@ -11,26 +11,25 @@ class Book:
 "Historical Fiction",                   
 "Poetry"                   
 ]   
-#Creat a constructor
+    #Create a constructor
     def __init__(self,isbn,title,author,genre,available):
         self.__isbn = isbn
         self.__title = title
         self.__author = author
         self.__genre = int(genre)
         self.__available = bool(available)
+
     #Method for getting isbn
     def get_isbn(self):
         return self.__isbn
+    
     #Method for getting title
     def get_title(self):
         return self.__title
+    
     #Method for getting author
     def get_author(self):
         return self.__author
-            
-    # Method for setting the isbn
-    def set_isbn(self,isbn):
-        self.__isbn = isbn
     
     #Method for getting genre
     def get_genre(self):
@@ -43,13 +42,17 @@ class Book:
     #Method for getting available
     def get_available(self):
         return self.__available
-
+    
     # additional getter method that returns a string based on the available attribute, I.e., If True Then ‘Available’ Else ‘Borrowed’.
     def get_availability(self):      
         if self.__available  is True:
             return "Available"
         else:
             return "Borrowed"
+        
+    # Method for setting the isbn
+    def set_isbn(self,isbn):
+        self.__isbn = isbn
         
     # Method for setting the title
     def set_title(self,title):
