@@ -60,6 +60,35 @@ def search_books(books, search_string):
             search_result.append(book)
     return search_result
 
+def add_book(book_list):
+  isbn = input("Enter the ISBN:")
+  title = input("Enter the title:")
+  author = input("Enter the author name:")
+  genre_name = input("Enter the genre name:")
+  
+  genre_id = Book.GENRE_NAME.get(genre_name)
+  if genre_id is None:
+    print("Invalid genre name.")
+    return
+  
+  genre = genre_name.get(genre_id)
+  new_book = Book(isbn,title,author,genre)
+  book_list.append(new_book)
+  print("Book added successfully")
+  
+def print_books(book_list):
+  print("\nBook Information")
+  for book in book_list:
+    print(f"ISBN:{book.get_isbn()}\nTitle:{book.get_title()}\nAuthor:{book.get_author()}\nGenre Name:{book.get_genre_name()}")
+    
+def save_books(book_list,file_name):
+  file_name = input("Enter file name:")
+  with open(file_name,'w') as file:
+   for book in book_list:
+     book_info = f"{book.get_isbn()},{book.get_title()},{book.get_author()},{book.get_genre_name()}\n"
+     file.write(book_info)
+  return len(book_list)
+
 def main():
     print("Starting the system ...")
     file_name = input("Enter book catalog filename: ")
