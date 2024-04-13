@@ -61,11 +61,6 @@ def search_books(books, search_string):
     return search_result
 
 def add_book(book_list):
-  '''
-    Description: Receives book list, inputs ISBN, title, author, and genre name (that is then validated) from the user creates a new Book instance of appends it to the list
-    Arguments: book_list - (list) - list of all book objects
-    Returns: None
-    '''
   isbn = input("Enter the ISBN:")
   title = input("Enter the title:")
   author = input("Enter the author name:")
@@ -82,28 +77,92 @@ def add_book(book_list):
   print("Book added successfully")
   
 def print_books(book_list):
-  '''
-    Description: Receives a book list and displays book information heading and then displays each Book object on a separate line
-    Arguments: book_list - (list) - list of all Book objects
-    Returns: None
-    '''
   print("\nBook Information")
   for book in book_list:
     print(f"ISBN:{book.get_isbn()}\nTitle:{book.get_title()}\nAuthor:{book.get_author()}\nGenre Name:{book.get_genre_name()}")
     
 def save_books(book_list,file_name):
-  '''
-    Description: Receives book list and name of CSV file. Iterates over book list, formatting a comma separated string containing book attributes, writes each stringa as a separate line to the file, and then returns the number of books saved to the file
-    Arguments: booklist - (list) - list of all Book objects
-                file_name - (str) - name of CSV file we are writing to
-    Returns: len(book_list) - (int) - number of books saved to the file
-    '''
   file_name = input("Enter file name:")
   with open(file_name,'w') as file:
    for book in book_list:
      book_info = f"{book.get_isbn()},{book.get_title()},{book.get_author()},{book.get_genre_name()}\n"
      file.write(book_info)
   return len(book_list)
+
+
+  '''•	Receives a book list
+•	Inputs an ISBN from the user and calls find_book_by_isbn()
+•	If an index to a matching book was returned and that book is currently available, invokes the book’s borrow_it() method. Otherwise displays an appropriate message.
+'''
+def createBookList():
+    bookList = []  # Create an empty list to store book information
+    with open("books.csv", mode='r') as file:
+        for line in file:
+            book_info = line.strip().split(',')
+            bookList.append(list(book_info))  # Append each book's information as a tuple
+    return bookList
+
+bookList = createBookList()
+
+'''Receives a book list and an ISBN
+	Iterates through the list of books and compares the ISBN parameter to each book’s isbn. Iteration stops when an exact match is found or when the end of the list is reached.
+	Returns the index of the matching book or -1 if none found
+'''
+def find_book_by_isbn(isbn,bookList):
+    genre_name = ""
+    for books in bookList:
+        if isbn == books[0]:
+            genre_name = books[3]
+            return genre_name
+    else:
+        return '-1'
+'''•	Receives a book list
+•	Inputs an ISBN from the user and calls find_book_by_isbn()
+•	If an index to a matching book was returned and that book is currently available, invokes the book’s borrow_it() method. Otherwise displays an appropriate message.
+'''
+def borrow_book(bookList):
+    isbn = input("Please enter the ISBN")
+    if find_book_by_isbn(isbn,bookList) != '-1':
+        for books in bookList:
+            if isbn == books[0]:
+                available = books[4]
+        if available == 'True':
+            Book.borrow_it()
+            print("borrow_it applied")
+        else:
+            print("Book isCurrently unavailable")
+    else:
+        print("PLease enter correct isbn")
+
+'''•	Receives a book list
+•	Inputs an ISBN from the user and calls find_book_by_isbn()
+•	If an index to a matching book was returned and that book is currently borrowed, invokes the book’s return_it() method. Otherwise displays an appropriate message.
+'''
+def return_book(bookList):
+    isbn = input("Please enter the ISBN")
+    if find_book_by_isbn(isbn,bookList) != '-1':
+        for books in bookList:
+            if isbn == books[0]:
+                available = books[4]
+        if available == 'False':
+            Book.return_it()
+            print("return_it applied")
+        else:
+            print("Book isCurrently unavailable")
+    else:
+        print("PLease enter correct isbn")
+'''•	Receives a book list
+•	Inputs an ISBN from the user and calls find_book_by_isbn()
+•	If an index to a matching book was returned, removes the book from the list. Otherwise displays an appropriate message.
+'''
+def remove_book(bookList):
+    isbn = input("Please enter the ISBN")
+    if find_book_by_isbn(isbn,bookList) != '-1':
+        for books in bookList:
+            if isbn == books[0]:
+                books = ""
+remove_book(bookList)
+
 
 def main():
     print("Starting the system ...")
