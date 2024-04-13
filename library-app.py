@@ -87,9 +87,10 @@ def print_books(book_list):
     Arguments: book_list - (list) - list of all Book objects
     Returns: None
     '''
-  print("\nBook Information")
+  print(f'{"ISBN":<14} {"Title":<25} {"Author":<25} {"Genre":<20} {"Availability":<12}')
+  print("-" * 14, "-" * 25,"-" * 25,"-" * 20, "-" * 12)
   for book in book_list:
-    print(f"ISBN:{book.get_isbn()}\nTitle:{book.get_title()}\nAuthor:{book.get_author()}\nGenre Name:{book.get_genre_name()}")
+    print(book)
     
 def save_books(book_list,file_name):
   '''
@@ -128,13 +129,12 @@ def find_book_by_isbn(isbn,bookList):
                 bookList - (str) - ISBN to find
     Returns: index - (int) - index of matching book or -1 if no book with ISBN is found
     '''
-    genre_name = ""
-    for books in bookList:
-        if isbn == books[0]:
-            genre_name = books[3]
-            return genre_name
+    for book in bookList:
+        if isbn == book.get_isbn():
+            index = bookList.index(book)
+            return index
     else:
-        return '-1'
+        return -1
 
 def borrow_book(bookList):
     '''
@@ -142,18 +142,19 @@ def borrow_book(bookList):
     Arguments: bookList - (list) - list of all Book objects
     Returns: None
     '''
-    isbn = input("Please enter the ISBN")
-    if find_book_by_isbn(isbn,bookList) != '-1':
-        for books in bookList:
-            if isbn == books[0]:
-                available = books[4]
-        if available == 'True':
-            Book.borrow_it()
-            print("borrow_it applied")
+    print("\n-- Borrow a Book --")
+    isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    index = find_book_by_isbn(isbn, bookList)
+    book = bookList[index]
+    if index != -1:
+        available = book.get_available()
+        if available == True:
+            book.borrow_it()
+            print(f"'{book.get_title()}' with ISBN {isbn} successfully borrowed.")
         else:
-            print("Book isCurrently unavailable")
+            print(f"'{book.get_title()}' with ISBN {isbn} is not currently available.")
     else:
-        print("PLease enter correct isbn")
+        print("No book found with that ISBN.")
 
 
 def return_book(bookList):
@@ -162,18 +163,19 @@ def return_book(bookList):
     Arguments: bookList - (list) - list of all Book objects
     Returns: None
     '''
-    isbn = input("Please enter the ISBN")
-    if find_book_by_isbn(isbn,bookList) != '-1':
-        for books in bookList:
-            if isbn == books[0]:
-                available = books[4]
-        if available == 'False':
-            Book.return_it()
-            print("return_it applied")
+    print("\n-- Return a Book --")
+    isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    index = find_book_by_isbn(isbn, bookList)
+    book = bookList[index]
+    if index != -1:
+        available = book.get_available()
+        if available == False:
+            book.return_it()
+            print(f"'{book.get_title()}' with ISBN {isbn} successfully returned.")
         else:
-            print("Book isCurrently unavailable")
+            print(f"'{book.get_title()}' with ISBN {isbn} is not currently borrowed.")
     else:
-        print("PLease enter correct isbn")
+        print("No book found with that ISBN.")
 
 def remove_book(bookList):
     '''
@@ -216,11 +218,20 @@ def main():
                 if len(search_result) == 0:
                     print("No matching books found.")
                 else:
-                    # print_books(search_result)
-                    pass
-            
+                    print_books(search_result)
+            case 2:
+                borrow_book(book_list)
+            case 3:
+                return_book(book_list)
+            case 4:
+                add_book(book_list)
+            case 5:
+                remove_book(book_list)
+            case 6:
+                print("\n-- Print book catalog --")
+                print_books(book_list)
     print("-- Exit the system --")
-    # save_books(book_list, file_name)
+    save_books(book_list, file_name)
     print("Book catalog has been saved.\nGood Bye!")
 
 main()
