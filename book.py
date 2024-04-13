@@ -45,7 +45,7 @@ class Book:
     
     # additional getter method that returns a string based on the available attribute, I.e., If True Then ‘Available’ Else ‘Borrowed’.
     def get_availability(self):      
-        if self.__available  is True:
+        if self.__available == True:
             return "Available"
         else:
             return "Borrowed"
@@ -67,13 +67,13 @@ class Book:
         self.__genre = genre
 
     #Sets the book’s available attribute to False
-    def borrow_it():
-        available = False
+    def borrow_it(self):
+        self.__available = False
 
     #Sets the book’s available attribute to True
-    def return_it():
-        available = True
+    def return_it(self):
+        self.__available = True
         
     #Returns a string representation of the book formatted for display. E.g.:
     def __str__(self):
-        return f"{self.__isbn:<20}{self.__title:^20}{self.__author:^20}{self.get_genre_name():^20}{self.get_availability():^20}"
+        return f'{str(self.__isbn):<14} {self.__title:<25} {self.__author:<25} {self.get_genre_name():<20} {self.get_availability():<12}'
