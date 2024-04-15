@@ -72,14 +72,14 @@ def add_book(book_list):
   author = input("Enter author name: ")
   genre_name = input("Enter genre: ")
   
-  while genre_name not in Book.GENRE_NAMES:
+  while genre_name not in Book.get_genre_names():
     print("Invalid genre. Choices are: ", end="")
-    for i in range(0,len(Book.GENRE_NAMES)-1):
-        print(f'{Book.GENRE_NAMES[i]}, ', end="")
-    print(Book.GENRE_NAMES[-1])
+    for i in range(0,len(Book.get_genre_names())-1):
+        print(f'{Book.get_genre_names()[i]}, ', end="")
+    print(Book.get_genre_names()[-1])
     genre_name = input("Enter genre: ")
 
-  genre = Book.GENRE_NAMES.index(genre_name)
+  genre = Book.get_genre_names().index(genre_name)
   new_book = Book(isbn,title,author,genre,"True")
   book_list.append(new_book)
   print(f"'{title}' with ISBN {isbn} successfully added.")

@@ -73,6 +73,11 @@ class Book:
     #Sets the book’s available attribute to True
     def return_it(self):
         self.__available = "True"
+
+    # Getter to obtain GENRE_NAMES static attribute
+    @staticmethod
+    def get_genre_names():
+        return Book.GENRE_NAMES
         
     #Returns a string representation of the book formatted for display. E.g.:
     def __str__(self):
