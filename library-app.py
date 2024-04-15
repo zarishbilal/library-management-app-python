@@ -118,20 +118,6 @@ def save_books(book_list,file_name):
 
 
 
-def createBookList():
-    '''
-    Description: Receives a book list, inputs an ISBN from the user and calls find_book_by_isbn(); if an index to a matching book was returned and that book is currently available, invokes the book’s borrow_it() method. Otherwise displays an appropriate message.
-    Arguments: none
-    Returns: bookList - (list) - returns list of all the books
-    '''
-    bookList = []  # Create an empty list to store book information
-    with open("books.csv", mode='r') as file:
-        for line in file:
-            book_info = line.strip().split(',')
-            bookList.append(list(book_info))  # Append each book's information as a tuple
-    return bookList
-
-
 def find_book_by_isbn(isbn,bookList):
     '''
     Description: Receives a book list and an ISBN, iterates through the list of books to find the matching ISBN; if found, the index of the matching book is returned, other -1 is returned
