@@ -10,7 +10,7 @@ def load_books(books, file_name):
     '''
     file = open(file_name, mode = "r")
     for line in file:
-        book_attributes = line.strip().split(",")
+        book_attributes = line.strip().split(",")  # Split book attributes into list and get rid of the ending newline char
         book = Book(book_attributes[0], book_attributes[1], book_attributes[2], book_attributes[3], book_attributes[4])
         books.append(book)
     return len(books)
@@ -22,12 +22,12 @@ def print_menu(menu_heading, menu_options):
                 menu_options - (dict) - includes menu options
     Returns: user_selection - (int) - valid user selection
     '''
-    # print menu heading and menu options
+    # Print menu heading and menu options
     print(menu_heading)
     for key in menu_options:
         print(f'{key}. {menu_options.get(key)}')
 
-    # validate user selection and return it
+    # Validate user selection based on the given menu_options and return it once it is valid
     valid = False
     user_selection = input("Enter your selection: ")
     if user_selection.isnumeric():
@@ -54,6 +54,7 @@ def search_books(books, search_string):
     search_string = search_string.upper()
     for book in books:
         string_found = False
+        # If the string is found in any of the book attributes, change string_found variable to True
         if search_string in str(book.get_isbn()) or search_string in book.get_title().upper() or search_string in book.get_author().upper() or search_string in book.get_genre_name().upper():
             string_found = True
         if string_found:
@@ -66,12 +67,15 @@ def add_book(book_list):
     Arguments: book_list - (list) - list of all book objects
     Returns: None
     '''
+  
+  # Get book information from user
   print("\n-- Add a book --")
   isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
   title = input("Enter the title: ")
   author = input("Enter author name: ")
   genre_name = input("Enter genre: ")
   
+  # Loop until a valid genre name is given (case sensitive). 
   while genre_name not in Book.get_genre_names():
     print("Invalid genre. Choices are: ", end="")
     for i in range(0,len(Book.get_genre_names())-1):
@@ -79,6 +83,7 @@ def add_book(book_list):
     print(Book.get_genre_names()[-1])
     genre_name = input("Enter genre: ")
 
+  # Converts the genre name into its corresponding number
   genre = Book.get_genre_names().index(genre_name)
   new_book = Book(isbn,title,author,genre,"True")
   book_list.append(new_book)
@@ -92,6 +97,8 @@ def print_books(book_list):
     '''
   print(f'{"ISBN":<14} {"Title":<25} {"Author":<25} {"Genre":<20} {"Availability":<12}')
   print("-" * 14, "-" * 25,"-" * 25,"-" * 20, "-" * 12)
+
+  # Print each book on a separate line
   for book in book_list:
     print(book)
     
@@ -103,6 +110,7 @@ def save_books(book_list,file_name):
     Returns: len(book_list) - (int) - number of books saved to the file
     '''
   with open(file_name,'w') as file:
+    # Write each book (in csv format) to the specified file; each book is on a separate line
     for book in book_list:
         book_info = f"{book.get_isbn()},{book.get_title()},{book.get_author()},{book.get_genre()},{book.get_available()}\n"
         file.write(book_info)
@@ -131,12 +139,13 @@ def find_book_by_isbn(isbn,bookList):
                 bookList - (str) - ISBN to find
     Returns: index - (int) - index of matching book or -1 if no book with ISBN is found
     '''
+    # Iterate through books until a matching ISBN is found; once found, return the index of the matching book
     for book in bookList:
         if isbn == book.get_isbn():
             index = bookList.index(book)
             return index
     else:
-        return -1
+        return -1  # No match is found
 
 def borrow_book(bookList):
     '''
@@ -144,10 +153,13 @@ def borrow_book(bookList):
     Arguments: bookList - (list) - list of all Book objects
     Returns: None
     '''
+    # Get ISBN of book to borrow
     print("\n-- Borrow a Book --")
     isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
     index = find_book_by_isbn(isbn, bookList)
     book = bookList[index]
+
+    # If a matching book is found, get its availability status to determine whether or not it can be borrowed, otherwise print appropriate message
     if index != -1:
         available = book.get_available()
         if available == "True":
@@ -165,10 +177,13 @@ def return_book(bookList):
     Arguments: bookList - (list) - list of all Book objects
     Returns: None
     '''
+    # Get ISBN of book to return
     print("\n-- Return a Book --")
     isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
     index = find_book_by_isbn(isbn, bookList)
     book = bookList[index]
+
+    # If a matching book is found, get its availability status to determine whether or not it can be returned, otherwise print appropriate message
     if index != -1:
         available = book.get_available()
         if available == "False":
@@ -187,11 +202,12 @@ def remove_book(bookList):
     '''
     print("\n-- Remove a book --")
     isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
-    if find_book_by_isbn(isbn,bookList) != -1:
-        for i in range(0, len(bookList)-1):
-            if isbn == bookList[i].get_isbn():
-                print(f"'{bookList[i].get_title()}' with ISBN {isbn} successfully removed.")
-                bookList.pop(i)
+    index = find_book_by_isbn(isbn, bookList)
+
+    # If a matching book is found, delete it from the book list, otherwise print appropriate message
+    if index != -1:
+        print(f"'{bookList[index].get_title()}' with ISBN {isbn} successfully removed.")
+        bookList.pop(index)
     else:
         print("No book found with that ISBN.")
 
@@ -199,6 +215,8 @@ def remove_book(bookList):
 def main():
     print("Starting the system ...")
     file_name = input("Enter book catalog filename: ")
+
+    # If the file does not exist, continue asking user for file name until a valid name is provided
     while not os.path.exists(file_name):
         file_name = input("File not found. Re-enter book catalog filename: ")
     print("Book catalog has been loaded.")
@@ -207,14 +225,18 @@ def main():
     menu_heading = "\nReader's Guild Library - Main Menu\n" + "=" * 34
     menu_options = {1:"Search for books", 2:"Borrow a book", 3:"Return a book", 0:"Exit the system"}
     
-    # continue showing main menu until user enters 0
+    # Continue showing main menu until user enters 0 to quit the program
     user_selection = 1
 
     while user_selection != 0:
         user_selection = print_menu(menu_heading, menu_options)
+
+        # If the user inputs the special password 2130, update menu_options so the user has special access on the next loop when print_menu() is called
         if user_selection == 2130:
             menu_heading = "\nReader's Guild Library - Librarian Menu\n" + "=" * 39
             menu_options = {1:"Search for books", 2:"Borrow a book", 3:"Return a book", 4:"Add a book", 5:"Remove a book", 6:"Print catalog", 0:"Exit the system"}
+        
+        # Call appropriate function depending on user input
         match user_selection:
             case 1:
                 print("\n-- Search for books --")
