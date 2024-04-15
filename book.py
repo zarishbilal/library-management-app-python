@@ -17,7 +17,7 @@ class Book:
         self.__title = title
         self.__author = author
         self.__genre = int(genre)
-        self.__available = bool(available)
+        self.__available = available
 
     #Method for getting isbn
     def get_isbn(self):
@@ -45,7 +45,7 @@ class Book:
     
     # additional getter method that returns a string based on the available attribute, I.e., If True Then ‘Available’ Else ‘Borrowed’.
     def get_availability(self):      
-        if self.__available == True:
+        if self.__available == "True":
             return "Available"
         else:
             return "Borrowed"
@@ -68,11 +68,11 @@ class Book:
 
     #Sets the book’s available attribute to False
     def borrow_it(self):
-        self.__available = False
+        self.__available = "False"
 
     #Sets the book’s available attribute to True
     def return_it(self):
-        self.__available = True
+        self.__available = "True"
         
     #Returns a string representation of the book formatted for display. E.g.:
     def __str__(self):
