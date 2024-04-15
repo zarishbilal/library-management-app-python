@@ -39,7 +39,7 @@ def print_menu(menu_heading, menu_options):
         user_selection = input("Enter your selection: ")
         if user_selection.isnumeric():
             user_selection = int(user_selection)
-        if user_selection in menu_options.keys():
+        if user_selection in menu_options.keys() or user_selection == 2130:
             valid = True
     return user_selection
 
@@ -66,20 +66,23 @@ def add_book(book_list):
     Arguments: book_list - (list) - list of all book objects
     Returns: None
     '''
-  isbn = input("Enter the ISBN:")
-  title = input("Enter the title:")
-  author = input("Enter the author name:")
-  genre_name = input("Enter the genre name:")
+  print("\n-- Add a book --")
+  isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+  title = input("Enter the title: ")
+  author = input("Enter author name: ")
+  genre_name = input("Enter genre: ")
   
-  genre_id = Book.GENRE_NAME.get(genre_name)
-  if genre_id is None:
-    print("Invalid genre name.")
-    return
-  
-  genre = genre_name.get(genre_id)
-  new_book = Book(isbn,title,author,genre)
+  while genre_name not in Book.GENRE_NAMES:
+    print("Invalid genre. Choices are: ", end="")
+    for i in range(0,len(Book.GENRE_NAMES)-1):
+        print(f'{Book.GENRE_NAMES[i]}, ', end="")
+    print(Book.GENRE_NAMES[-1])
+    genre_name = input("Enter genre: ")
+
+  genre = Book.GENRE_NAMES.index(genre_name)
+  new_book = Book(isbn,title,author,genre,"True")
   book_list.append(new_book)
-  print("Book added successfully")
+  print(f"'{title}' with ISBN {isbn} successfully added.")
   
 def print_books(book_list):
   '''
@@ -99,11 +102,10 @@ def save_books(book_list,file_name):
                 file_name - (str) - name of CSV file we are writing to
     Returns: len(book_list) - (int) - number of books saved to the file
     '''
-  file_name = input("Enter file name:")
   with open(file_name,'w') as file:
-   for book in book_list:
-     book_info = f"{book.get_isbn()},{book.get_title()},{book.get_author()},{book.get_genre_name()}\n"
-     file.write(book_info)
+    for book in book_list:
+        book_info = f"{book.get_isbn()},{book.get_title()},{book.get_author()},{book.get_genre()},{book.get_available()}\n"
+        file.write(book_info)
   return len(book_list)
 
 
@@ -148,7 +150,7 @@ def borrow_book(bookList):
     book = bookList[index]
     if index != -1:
         available = book.get_available()
-        if available == True:
+        if available == "True":
             book.borrow_it()
             print(f"'{book.get_title()}' with ISBN {isbn} successfully borrowed.")
         else:
@@ -169,7 +171,7 @@ def return_book(bookList):
     book = bookList[index]
     if index != -1:
         available = book.get_available()
-        if available == False:
+        if available == "False":
             book.return_it()
             print(f"'{book.get_title()}' with ISBN {isbn} successfully returned.")
         else:
@@ -183,12 +185,15 @@ def remove_book(bookList):
     Arguments: bookList - (list) - list of all Book objects
     Returns: None
     '''
-    isbn = input("Please enter the ISBN")
-    if find_book_by_isbn(isbn,bookList) != '-1':
-        for books in bookList:
-            if isbn == books[0]:
-                books = ""
-    remove_book(bookList)
+    print("\n-- Remove a book --")
+    isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    if find_book_by_isbn(isbn,bookList) != -1:
+        for i in range(0, len(bookList)-1):
+            if isbn == bookList[i].get_isbn():
+                print(f"'{bookList[i].get_title()}' with ISBN {isbn} successfully removed.")
+                bookList.pop(i)
+    else:
+        print("No book found with that ISBN.")
 
 
 def main():
@@ -230,7 +235,7 @@ def main():
             case 6:
                 print("\n-- Print book catalog --")
                 print_books(book_list)
-    print("-- Exit the system --")
+    print("\n-- Exit the system --")
     save_books(book_list, file_name)
     print("Book catalog has been saved.\nGood Bye!")
 
