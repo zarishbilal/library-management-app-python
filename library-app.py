@@ -22,7 +22,7 @@ def print_menu(menu_heading, menu_options):
                 menu_options - (dict) - includes menu options
     Returns: user_selection - (int) - valid user selection
     '''
-    # Print menu heading and menu options
+    # Print menu heading and menu options.
     print(menu_heading)
     for key in menu_options:
         print(f'{key}. {menu_options.get(key)}')
