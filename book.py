@@ -70,7 +70,7 @@ class Book:
     def borrow_it(self):
         self.__available = "False"
 
-    #Sets the book’s available attribute to True 
+    #Sets the book’s available attribute to True
     def return_it(self):
         self.__available = "True"
 
