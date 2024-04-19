@@ -47,7 +47,6 @@ class Book:
     
   
     
-class Genre:
   GENRE_NAMES={
   0:"Romance",
   1:"Mystery",
