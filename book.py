@@ -1,3 +1,9 @@
+'''
+Group: 1
+Names: Zarish, Aleena,Morgan
+Date: 19/04/2024
+Final Project: this file contains the Book class which will be used for the library-app
+'''
 class Book:
     GENRE_NAMES = [
 "Romance",
