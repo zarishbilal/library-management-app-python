@@ -2,9 +2,10 @@
 Group: 1
 Names: Zarish, Aleena,Morgan
 Date: 19/04/2024
-Final Project: this file contains the Book class which will be used for the library-app
+Final Project: this file contains the Book class which will be used for the library-app functions.
 '''
 class Book:
+    #list of genre names available 
     GENRE_NAMES = [
 "Romance",
 "Mystery",                  

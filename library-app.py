@@ -1,3 +1,13 @@
+'''
+Group: 1
+Names: Zarish, Aleena,Morgan
+Date: 19/04/2024
+Final Project: The Reader's Guild Library requires a new system to manage its inventory and borrowing process more efficiently.
+this file contains the Python solution for their library management system. Upon start-up, load all library books from a CSV file into a list.
+General users can select and perform any of the main menu functions: search, borrow, return a book or exit the system.
+Entry of the special passcode of “2130” unlocks additional menu options including add a book, remove a book and print catalog.
+Upon shut-down, save all library books from the list to the CSV file.
+'''
 from book import Book
 import os
 
